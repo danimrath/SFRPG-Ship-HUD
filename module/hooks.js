@@ -24,7 +24,6 @@ export const initializeHooks = () => {
                 }
             });
             ui.ShipHUD.updateHUD(ui.ShipHUD.getShipActor()); 
-            ui.ShipHUD.showShipHud(true); 
         } else {          
             ui.ShipHUD.showShipHud(false); 
         }

@@ -33,7 +33,7 @@ export class ShipHUD extends Application {
     const playerShip = canvas.tokens.ownedTokens.find(
       (a) => a.name === this.settings.playerShip
     );
-    return playerShip?.length > 0;
+    return playerShip !== undefined;
   }
 
   getData(options = {}) {
