@@ -1,0 +1,118 @@
+#sfrpg-ship-hud {
+    --sh-horizontal: calc(var(--sidebar-width) + 1em);
+    --sh-vertical: 0.5em;
+    --sh-font-size: 18px;
+    --sh-font-color: "#000000";
+    --sh-width: "300px";
+    --sh-height: "300px";
+    --sh-label-bg-color: "#FFFFFF";
+    --sh-label-padding: 0.3em;
+    --sh-font: "Signika";
+    --sh-label-hp-vertical: 0.0em;
+    --sh-label-shield-top: 0.0em;
+    --sh-label-shield-right: 0.0em;
+    --sh-label-shield-left: 0.0em;
+    --sh-label-shield-bottom: 0.0em;
+
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: var(--sh-font-size);
+    z-index: calc(var(--z-index-ui) + 10);
+    pointer-events: none;
+
+    width: var(--sh-width);
+    height: var(--sh-height);
+
+    filter: drop-shadow(0.15rem 0.15rem 0.20rem rgba(0, 0, 0, 0.5));
+}
+
+#sfrpg-ship-hud.top-left {
+    left: var(--sh-horizontal);
+    top: var(--sh-vertical);
+}
+
+#sfrpg-ship-hud.top-right {
+    right: var(--sh-horizontal);
+    top: var(--sh-vertical);
+}
+
+#sfrpg-ship-hud.bottom-left {
+    left: var(--sh-horizontal);
+    bottom: var(--sh-vertical);
+}
+
+#sfrpg-ship-hud.bottom-right {
+    right: var(--sh-horizontal);
+    bottom: var(--sh-vertical);
+}
+
+#sfrpg-ship-hud .shipImg {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-position: 50% 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#sfrpg-ship-hud .labelHP {
+    display: block;
+    font-family: var(--sh-font);
+    position: absolute;
+    color: var(--sh-font-color);
+    background-color: var(--sh-label-bg-color);
+    padding: var(--sh-label-padding);
+    bottom: calc(var(--sh-height) / 2 + var(--sh-label-hp-vertical));
+    text-align: center;
+}
+
+#sfrpg-ship-hud .labelShieldTop {
+    display: block;
+    font-family: var(--sh-font);
+    position: absolute;
+    color: var(--sh-font-color);
+    background-color: var(--sh-label-bg-color);
+    padding: var(--sh-label-padding);
+    bottom: calc(var(--sh-height) - 1em + var(--sh-label-shield-top));
+    text-align: center;
+}
+
+#sfrpg-ship-hud .labelShieldRight {
+    display: block;
+    font-family: var(--sh-font);
+    position: absolute;
+    color: var(--sh-font-color);
+    background-color: var(--sh-label-bg-color);
+    padding: var(--sh-label-padding);
+    bottom: calc(var(--sh-height) / 2 );
+    text-align: left;
+    right: var(--sh-label-shield-right);
+}
+
+#sfrpg-ship-hud .labelShieldLeft {
+    display: block;
+    font-family: var(--sh-font);
+    position: absolute;
+    color: var(--sh-font-color);
+    background-color: var(--sh-label-bg-color);
+    padding: var(--sh-label-padding);
+    bottom: calc(var(--sh-height) / 2 );
+    text-align: right;
+    left: var(--sh-label-shield-left);
+}
+
+#sfrpg-ship-hud .labelShieldBottom {
+    display: block;
+    font-family: var(--sh-font);
+    position: absolute;
+    color: var(--sh-font-color);
+    background-color: var(--sh-label-bg-color);
+    padding: var(--sh-label-padding);
+    bottom: calc(var(--sh-label-shield-bottom) + 1em);
+    text-align: center;
+}
+
