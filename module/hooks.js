@@ -17,7 +17,7 @@ export const initializeHooks = () => {
 
     Hooks.on("canvasReady", async () => {
         const shipName = getSetting(CONST.SETTINGS.PLAYER_SHIP_NAME);
-        if (ui.ShipHUD.shipTokenPresent()) {
+        if (shipName && ui.ShipHUD.shipTokenPresent()) {
             Hooks.on("updateActor", async (actor, data) => {
                 if (actor.name === shipName) {
                     ui.ShipHUD.updateHUD(actor);

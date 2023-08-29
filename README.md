@@ -9,6 +9,8 @@ Simple HUD element to display the HP and shield of the players ship with a UI im
 
 ## Enabling the HUD
 
+The HUD will be shown automatically for all players on any scene when a token for chosen ship actor is detected.
+
 ![Ship-HUD-1.png](screenshots%2FShip-HUD-1.PNG)
 
 1) Enter the name of the ship actor you wish to be displayed by the HUD

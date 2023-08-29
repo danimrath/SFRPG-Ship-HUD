@@ -66,10 +66,10 @@ export class ShipHUD extends Application {
       }
       this.updateHUD(shipActor);
     } else {
-      ui.notifications.warn(
-        `SFRPG - Ship Hud - Player Ship (${this.settings.playerShip}) not found.`,
-        { permanent: false }
-      );
+      // ui.notifications.warn(
+      //   `SFRPG - Ship Hud - Player Ship (${this.settings.playerShip}) not found.`,
+      //   { permanent: false }
+      // );
       this.showShipHud(false);
     }
 
