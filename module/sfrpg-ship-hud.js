@@ -29,11 +29,20 @@ export class ShipHUD extends Application {
     return playerShip;
   }
 
-  shipTokenPresent() {
-    const playerShip = canvas.tokens.ownedTokens.find(
-      (a) => a.name === this.settings.playerShip
+  getShipToken() {
+    const shipName = getSetting(CONST.SETTINGS.PLAYER_SHIP_NAME);
+    const playerShip = canvas.tokens.ownedTokens.filter(
+      (a) => a.name === shipName
     );
-    return playerShip !== undefined;
+    if (playerShip.length > 1) {
+      ui.notifications.warn(`SFRPG - Ship Hud - Multiple Ship Tokens found.`, {
+        permanent: false,
+      });
+    }
+    if (playerShip.length === 1) {
+      return playerShip[0]?.document?.actor;
+    }
+    return undefined;
   }
 
   getData(options = {}) {
@@ -64,12 +73,12 @@ export class ShipHUD extends Application {
       ) {
         this.updateShipImage(CONST.SETTINGS.DEFAULT_IMAGE_PATH);
       }
-      this.updateHUD(shipActor);
+      this.updateHUD();
     } else {
-      // ui.notifications.warn(
-      //   `SFRPG - Ship Hud - Player Ship (${this.settings.playerShip}) not found.`,
-      //   { permanent: false }
-      // );
+      ui.notifications.warn(
+        `SFRPG - Ship Hud - Player Ship (${this.settings.playerShip}) not found.`,
+        { permanent: false }
+      );
       this.showShipHud(false);
     }
 
@@ -150,49 +159,55 @@ export class ShipHUD extends Application {
     }
   }
 
-  async updateHUD(actor) {
-    const hp = actor.system.attributes.hp.value ?? 0;
-    const maxhp = actor.system.attributes.hp.max ?? 0;
+  async updateHUD() {
+    const actor = this.getShipToken();
+    try {
+      const hp = actor.system.attributes.hp.value ?? 0;
+      const maxhp = actor.system.attributes.hp.max ?? 0;
 
-    const maxsp = actor.system.attributes.shields.evenDistribution ?? 0;
-    let topsp = 0;
-    let bottomsp = 0;
-    let leftsp = 0;
-    let rightsp = 0;
+      const maxsp = actor.system.attributes.shields.evenDistribution ?? 0;
+      let topsp = 0;
+      let bottomsp = 0;
+      let leftsp = 0;
+      let rightsp = 0;
 
-    switch (CONST.IMAGE_FACES[this.settings.imageFacing]) {
-      case CONST.IMAGE_FACES.NORTH:
-        topsp = actor.system.quadrants.forward.shields.value ?? 0;
-        rightsp = actor.system.quadrants.starboard.shields.value ?? 0;
-        bottomsp = actor.system.quadrants.aft.shields.value ?? 0;
-        leftsp = actor.system.quadrants.port.shields.value ?? 0;
-        break;
-      case CONST.IMAGE_FACES.EAST:
-        topsp = actor.system.quadrants.port.shields.value ?? 0;
-        rightsp = actor.system.quadrants.forward.shields.value ?? 0;
-        bottomsp = actor.system.quadrants.starboard.shields.value ?? 0;
-        leftsp = actor.system.quadrants.aft.shields.value ?? 0;
-        break;
-      case CONST.IMAGE_FACES.SOUTH:
-        topsp = actor.system.quadrants.aft.shields.value ?? 0;
-        rightsp = actor.system.quadrants.port.shields.value ?? 0;
-        bottomsp = actor.system.quadrants.forward.shields.value ?? 0;
-        leftsp = actor.system.quadrants.starboard.shields.value ?? 0;
-        break;
-      case CONST.IMAGE_FACES.WEST:
-        topsp = actor.system.quadrants.starboard.shields.value ?? 0;
-        rightsp = actor.system.quadrants.aft.shields.value ?? 0;
-        bottomsp = actor.system.quadrants.port.shields.value ?? 0;
-        leftsp = actor.system.quadrants.forward.shields.value ?? 0;
-        break;
+      switch (CONST.IMAGE_FACES[this.settings.imageFacing]) {
+        case CONST.IMAGE_FACES.NORTH:
+          topsp = actor.system.quadrants.forward.shields.value ?? 0;
+          rightsp = actor.system.quadrants.starboard.shields.value ?? 0;
+          bottomsp = actor.system.quadrants.aft.shields.value ?? 0;
+          leftsp = actor.system.quadrants.port.shields.value ?? 0;
+          break;
+        case CONST.IMAGE_FACES.EAST:
+          topsp = actor.system.quadrants.port.shields.value ?? 0;
+          rightsp = actor.system.quadrants.forward.shields.value ?? 0;
+          bottomsp = actor.system.quadrants.starboard.shields.value ?? 0;
+          leftsp = actor.system.quadrants.aft.shields.value ?? 0;
+          break;
+        case CONST.IMAGE_FACES.SOUTH:
+          topsp = actor.system.quadrants.aft.shields.value ?? 0;
+          rightsp = actor.system.quadrants.port.shields.value ?? 0;
+          bottomsp = actor.system.quadrants.forward.shields.value ?? 0;
+          leftsp = actor.system.quadrants.starboard.shields.value ?? 0;
+          break;
+        case CONST.IMAGE_FACES.WEST:
+          topsp = actor.system.quadrants.starboard.shields.value ?? 0;
+          rightsp = actor.system.quadrants.aft.shields.value ?? 0;
+          bottomsp = actor.system.quadrants.port.shields.value ?? 0;
+          leftsp = actor.system.quadrants.forward.shields.value ?? 0;
+          break;
+      }
+
+      this.element.find(".labelHP").html(hp + "/" + maxhp);
+      this.element.find(".labelShieldTop").html(topsp + "/" + maxsp);
+      this.element.find(".labelShieldLeft").html(leftsp + "/" + maxsp);
+      this.element.find(".labelShieldBottom").html(bottomsp + "/" + maxsp);
+      this.element.find(".labelShieldRight").html(rightsp + "/" + maxsp);
+
+      this.showShipHud(true);
+    } catch (e) {
+      console.log(e);
+      this.showShipHud(false);
     }
-
-    this.element.find(".labelHP").html(hp + "/" + maxhp);
-    this.element.find(".labelShieldTop").html(topsp + "/" + maxsp);
-    this.element.find(".labelShieldLeft").html(leftsp + "/" + maxsp);
-    this.element.find(".labelShieldBottom").html(bottomsp + "/" + maxsp);
-    this.element.find(".labelShieldRight").html(rightsp + "/" + maxsp);
-
-    this.showShipHud(true);
   }
 }
